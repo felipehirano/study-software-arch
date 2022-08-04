@@ -1,0 +1,77 @@
+Perspectivas para arquitetar software de qualidade:
+
+1. Perfomance
+    - É o desempenho que o software possui para completar um determinado workload;
+    - As unidades de medida para avaliar a perfomance de um software são:
+        - Latência (response time) -> É a chamada de uma requisicao até a resposta do servidor;
+        - Throughtput -> O quanto de requisicao o software aguenta;
+    - Ter um software perfomtico é diferente de um software escalável;
+
+    Como melhorar a perfomance ?
+        - Diminuindo a latência que é medida em milisegundo:
+            - A latência é afetada pelo tempo de processamento da aplicacao, 
+            rede e chamadas externas(chamadas de APIs externas);
+        - Aumentar Throughtput:
+            - Quantidade de requisicoes;
+            - Diretamente ligado a latência;
+    Principais razoes para baixa perfomance:
+        - Processamento ineficiente;
+        - Recursos computacionais limitados;
+        - Trabalhar de forma bloqueante;
+        - Acesso serial a recursos(Exemplo loop de chamda de requisicoes);
+    Principais formas para aumentar a eficiência:
+        - Escala da capacidade computacional (CPU, Disco, memória, rede);
+        - Lógica por trás do software (Algoritmos, queries, overhead de frameworks);
+        - Concorrencia e paralelismo;
+        - Banco de dados (tipos de bancos, schema);
+        - Caching;
+    Capacidade computacional, Escala vertival x horizontal:
+        - Aumentar a capacidade computacional de alguma forma;
+        - Vertical -> Aumentar a capacidade computacional;
+        - Horizontal -> Aumento a capacidade de máquinas;
+    Diferenca entre concorrencia e paralelismo:
+        - Concorrencia é sobre lidar com muitas coisas ao mesmo tempo (Trabalha de forma serial, um de cada vez);
+            - Eu tendo esse único processo, esse processo é bloqueante, 
+            ele vai fazer cada ação de uma vez, ou seja, faz uma, faz uma, faz outra. 
+            Ele está trabalhando de forma serial com um único processo, ele atende cinco requests. 
+        - Paralelistmo é fazer muitas coisas ao mesmo tempo
+        (Trabalha de forma paralela com várias threads processando ao mesmo tempo);
+            - Eu posso atender as minhas cinco requests daquela forma, em dez milissegundos eu consigo resolver 
+            as cinco porque eu tenho cinco threads trabalhando de forma paralela.
+
+        OBS: Eu posso aumentar o número de workers, o grande ponto é que para cada nova thread que eu chamo no 
+            meu sistema operacional, eu gasto um mega. Portanto, eu começo gastando um mega somente para liberar 
+            uma thread no meu sistema operacional para eu ter mais worker e mais todo poder computacional e 
+            memória que esse worker vai gastar para fazer esse processamento. Assim, não dá para eu abrir 
+            infinitas threads, principalmente threads que vamos no sistema operacional
+    Caching:
+        - Cache na borda / Edge computing;
+        - Dados estáticos (Imagens, css);
+        - Páginas WEB;
+        - Funcoes internas:
+            - Evita reprocessamento de algoritmos pesados;
+            - Acesso ao banco de dados;
+        - Objetos;
+    Caching Exclusivo x Compartilhado:
+        - Exclusivo(local): 
+            - Baixa latência;
+            - Duplicado entre os nós;
+            - Problemas relacionados a sessoes;
+        - Compartilhado(centralizado):
+            - Maior latência;
+            - Não há duplicacao;
+            - Sessões compartilhadas;
+            - Banco de dados externo:
+                - Pode cachear no banco de dados como MySQL, Redis e Memcache;
+    Caching:Edge computing:
+        - Ajuda com que a informacao do usuário esteja mais perto dele, 
+        evitando com que a requisicao trafegue mais pela internet;
+        - Evita a requisicao chegar ate o cloud provider/infra;
+        - Normalmente arquivos estáticos;
+        - CDN - Content Delivery Network -> É criado uma malha de servidores pelo mundo, e quando uma netflix
+        da vida sobe um novo vídeo, esse vídeo é espalhado para todos esses servidores, ou seja, se alguém quiser
+        acessar esse vídeo ele vai acessar do data center mais próximo.
+        - Cloudflare workers -> É uma plataforma de edge computing que permite fazer deploy de aplicacoes
+        que serão executadas em javascript(engineV8) que irá executar muito rápido;
+        - Vercel -> Ela que mantém o netxtjs ( Trabalha de forma com o edge computing );
+        - Akamai;

@@ -1,0 +1,63 @@
+2. Escalabilidade
+    - Escalabilidade é a capacidade de sistemas suportarem o aumento(ou reducao) dos workloads incrementando(ou reduzindo) 
+    o custo em menor ou igual proporcao;
+    - Aumentar ou diminuir o throughput aumentando ou diminuindo a capacidade computacional;
+    - Escala vertical x horizontal;
+
+        Vertical :
+
+        Quando eu aumento o meu poder computacional, quanto mais memória, mais CPU, 
+        mais disco e maior velocidade em disco eu colocar, mais eu consigo escalar verticalmente o meu software
+
+        Trabalhar com uma escala vertical tem um problema muito grande, porque 
+        a quantidade de limite de hardware em uma máquina é complicado.
+
+        Horizontal : 
+
+        Ao invés de eu pegar uma máquina com 64 gigas de RAM, eu posso pegar quatro máquinas com 16, por exemplo. 
+        Assim eu consigo aumentar essas máquinas de uma forma que vão me ajudar a trabalhar no dia a dia e, 
+        obviamente, eu preciso colocar algo como um proxy reverso ou load balancer na frente, ele vai fazer 
+        com que roteie essas requisições para as máquinas que eu quero para que ele balanceie isso pra mim.
+
+        Agora, em uma escala horizontal, eu não preciso ter a melhor máquina do mundo, o que eu preciso ter 
+        são várias máquinas e se uma cair, obviamente nem todas vão ficar fora do ar nesse momento.
+
+    - Escalando aplicacoes:
+
+        Horizontalmente: 
+            - Aumentar(diminuir) a quantidade de máquinas (ou seja, máquinas podem ser descartáveis);
+            - Disco é efêmero (Significa que tudo o que salvar em disco, pode ser apagado), ou seja, ele só 
+            vai armazenar um dado temporário;
+            - Servidor de aplicacao x Servidor de assets;
+                - Uma coisa é o servidor da aplicacao(Possui o sistema, arquivos php, java, ruby e etc...);
+                - Servidor de assets é onde ficam armazenados imagens, css, páginas esttáticas e etc..(exemplo bucket s3);
+                - Se o servidor de aplicacao precisar de qualquer coisa relacionada ao assets, ele vai buscar
+                nesses outros servidores;
+                - Cache centralizado(compartilhado);
+                - Sessões Centralizadas -> O seu software é efêmero, ele não armazena estado, todo estado que existir
+                na aplicacao, vai ficar guardado de forma externa. A aplicacao é stateless;
+                - Upload/Gravacao de arquivos (exemplo bucket s3);  
+            - Tudo pode ser criado e destruido facilmente;
+
+    - Escalando banco de dados:
+        - É um tema super complexo;
+        - Aumentar recurso computacional(possui limite);
+        - Distribuir responsabilidades (escrita x leitura);
+            - Criar um db para escrita e outro pra leitura;
+        - Shards de forma horizontal;
+        - Serveless ( Os clouds servers se viram com o servidor), você não se preocupa com lado do servidor;
+        - Otimizacao de queries e índices;
+            - Sistema de APM (Application perfomance monitoring) - Com isso, dá pra ver todas as queries rodando;
+            - Trabalhar com índices de forma consciente;
+            - Explian nas queries (Mostra passo a passo da querie, podendo ver onde está o gargalo);
+            - CQRS(Command Query Responsibility Segregation);
+
+    - Proxy reverso:
+        - É um servidor que fica na frente dos servidores web e encaminha as solicitacoes do cliente para
+        esses servidores web;
+        - Solucoes populares de proxy reverso:
+            - Nginx;
+            - HAProxy(HA = High Availability);
+            - Traefik;
+
+

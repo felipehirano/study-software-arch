@@ -1,0 +1,108 @@
+Introducao a Arquitetura de Software:
+
+- É a relacao entre os objetivos de negócio e suas restricoes com os componentes a serem criados e suas responsabilidades 
+    visando sua evolucao de software.
+- O processo de arquitetar um sofware estabelece que o que está sendo desenvolvido faca parte de um conjunto maior;
+
+Tipos de arquitetura:
+
+1.Software:
+    - É uma disciplina da engenharia de software;
+    - Diretamente ligada ao processo de desenvolvimento de software;
+    - Afeta diretamente na estrutura organizacional da empresa;
+        - Formacao dos times;
+        - Estrutura dos componentes de software;
+        - "Organizacoes que desenvolvem sistemas de software tendem a produzir sistemas que são cópias das estruturas de comunicacao dessas empresas. (Melvin Conway)"(Ou seja, o software vai ser desenvolvido de acordo com os times que você está trabalhando);
+            Exemplo: Se você possui um time completo(1 back, 1 front e 1 dba) a arquitetura vai se basear de acordo com isso, agora se voce tem apenas 1 backend, provavelmente o front estará dentro da tecnologia do backend;
+2.Solucao:
+    - Fica entre a área de negócios e software;
+    - Transformar requisitos de negócio em solucoes de software;
+    - Desenhos arquiteturais da solucao de um software para reproduzir como ele irá funcionar(Em formato de diagramas);
+        - Diagrama C4;
+        - UML;
+        - BPMN;
+    - Analisa os impactos comerciais em relacao a uma escolha de tecnologia;
+    - Pode participar do processo comercial de pré-venda e venda;
+    - Analisa os impactos dos custos para o negócio;
+    - É uma pessoa técnica que entende bem do negócio e que gosta de se comunicar;
+3.Tecnológica:
+    - Especialidade em tecnologias específicas de mercado(Alguém que manja muito sobre uma ferramenta);
+    - Geracao de valor baseado em especialidades;
+    - Diversidade de profissionais especialistas;
+        Exemplos:
+            - Arquiteto Elastic (Se for no site da elastic, vai ver o quão grande são as ferramentas da Elastic, o cara que é arquiteto tecnológico ele vai saber os detalhes dessa ferramenta);
+            - Arquiteto Java;
+            - SQL Server;
+            - Oracle;
+            - SAP;
+4.Corporativa(Está muito relacionado com a governanca da empresa):
+    - Impacta estrategicamente a organizacao como um todo;
+    - Avaliacao de custos;
+    - Avaliacao de possiveis novas tecnologias;
+    - Padronizacao de tecnologias;
+    - Planejamento de grandes implantacoes;
+        - Sistemas "core";
+        - Migracoes;
+
+    OBS: Pluraridade de tecnologias tem que fazer sentido para a empresa.
+
+Papéis do arquiteto(a) de software:
+
+    - Transformar requisitos de negócio em padrões arquiteturais;
+    - Orquestrar pessoas desenvolvedoras e experts de domínio;
+    - Entender de forma profunda conceitos e modelos arquiteturais;
+    - Auxiliar na tomada de decisão nos momentos de crise;
+    - Reforca boas práticas de desenvolvimento;
+    - Code reviews;
+
+Por que aprender arquitetura de software ?
+
+    - Poder navegar da visão macro para a visão micro de um ou mais softwares;
+    - Entender quais são as diversas opcoes que temos para desenvolver a mesma coisa e escolher a melhor solucao para determinado contexto;
+    - Pensar a longo prazo no projeto e sua sustentabilidade;
+    - Tomar decisões de forma mais fria e calculada evitando assim ser influenciado(a) por "hypes" de mercado;
+    - Mergulhar em padrões de projeto e de desenvolvimento e de boas práticas;
+    - Ter mais clareza do impacto que o software possui na organizacao como um todo;
+    - Tomar decisões com mais confianca;
+
+Arquitetura x Design diferencas:
+
+    - Arquitetura: Escopo global, alto nível;
+    - Design: Escopo local;
+    - Tudo o que falar de arquitetura, está falando de design mas a recíoproca não é verdadeira;
+
+Sustentabilidade:
+
+    - Desenvolver software é caro;
+    - Software resolve uma "dor";
+    - Software precisa se pagar ao longo do tempo;
+    - Acompanhar a evolucao do negócio;
+    - Quanto mais tempo o software fica no ar, mais retoro ele gera;
+    - A solucao precisa ser arquitetada;
+
+Pilares da arquitetura de software:
+
+    - Estruturacao;
+        - Fácil evolucao, componentizacao para atender os objetivos do negócio;
+    - Componentizacao;
+    - Relacionamento entre sistemas;
+    - Governanca;
+        - Padroes, regras, documentacao, etc;
+
+Requisitos arquiteturais (RAs)
+
+    - Perfomance;
+        - As requisicoes não podem passar de 500ms;
+        - Aguantar 50 requisicoes por segundo;
+    - Armazenamento de dados;
+        - Os dados tem que estar armazenados em um banco SQL;
+    - Escalabilidade;
+        - Vai escalar horizontalmente, verticalmente;
+        - Road balancer ? Algoritmo round-robin;
+    - Seguranca;
+        - Certificacoes;
+        - Criptografia;
+    - Legal;
+        - Garantir LGPD;
+    - Audit;
+    - Marketing;

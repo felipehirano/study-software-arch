@@ -1,0 +1,68 @@
+Características arquiteturais:
+
+- Todas as vezes que for desenvolver um sistema, ele irá possuir essas caracterísitcas;
+- Importante entender a estrutura pois, quando voce trabalha baseado em uma intencao, você estará preparado para resolver
+um problema;
+
+São divididas em algumas áreas:
+
+1. Operacionais
+    - Disponibilidade: 
+        - Quanto meu tempo irá ficar no ar ? 
+        - Como ele ficará disponível ? 
+        - Qual o nível de disponibilidade que quero chegar no sistema ? 
+    - Recuperacao de desastres:
+        - Como fazer caso o sistema saia do ar ? 
+    - Perfomance:
+        - Quanto o sistema tem que aguentar ?
+        - Quantas requisicoes ? Qual banco utilizar para continuar sendo rápido, caso tenha muitas requisicoes de escrita ?
+    - Recuperacao (backup):
+        - Necessário pensar se é possível adicionar o backup em uma rede diferente
+    - Confiabilidade e seguranca:
+        - Onde é o a parte crítica do sistema ?
+        - Garantir confiabilidade;
+    - Robustes:
+        - Ele está em uma estrutura robusta o suficiente para caso seja necesário escalar o software ?
+    - Escalabilidade:
+        - Verticalmente (aumentar recurso de máquina(cpu));
+        - Horizontalmente (adicionar mais máquinas);
+
+2. Estruturais (Ligadas ao processo de desenvolvimento)
+    - Configurável: 
+        - Fácil configuracao;
+        - Se precisar mudar uma linha de código para funcionar em qualquer ambiente, então não é configurável
+    - Extensibilidade:
+        - Tem que ser pensada de forma que ela irá crescer (Cada vez mais utilizar novas APIs ou algo irá mudar);
+    - Fácil instalacao
+        - Padronizacao de ambiente (Containers/Docker);
+        - Tem que ser configurável;
+    - Reuso de componentes;
+    - Internacionalizacao:
+        - Voltada mais para o frontend(por exemplo alterar a lingua utilizada na tela);
+        - Backend pensar em pontos que serão impactados diretamente nisso ai (por exemplo várias moedas);
+    - Fácil manutencao:
+        - Testes facilitam MUITO na manutencao do software;
+    - Portabilidade:
+        - Diversos bancos de dados;
+    - Fácil suporte
+        - logs e debugging;
+        - observabilidade;
+
+3. Cross-Cutting
+    - Acessibilidade:
+        - Qual público ? 
+        - Foco no front;
+        - Está facil todas as pessoas utilizarem o software ?
+    - Processo de retencao e recuperacao de dados: 
+        - Quanto tempo os dados serão mantidos;    
+    - Autenticacao e autorizacao:
+        - API gateway;
+    - Legal:
+        - É legal ?
+    - Privacidade:
+        - LGPD;
+    - Seguranca:
+        - Ponta a ponta;
+    - Usabilidade:
+        - Frontend pensa no usuario final com ajuda de UX;
+        - Backend pensa em documentacao em APIs para quem for utilizar esse backend.

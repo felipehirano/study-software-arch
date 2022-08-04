@@ -1,0 +1,104 @@
+3. Resiliência
+
+    - É um conjunto de estratégias adotadas intencionalmente para a adaptacao de um sistema quando uma falha ocorre;
+    - Ou por culpa do próprio software ou por algum outro software que está integrado;
+    - Ter estratégias de resiliência nos possibilita minimizar os riscos de perda de dados e transacoes importantes
+    para o negócio;
+
+    Quais as estratégias ?
+        
+        - Proteger e ser protegido:
+            - Um sistema em uma arquitetura distribuída precisa adotar mecanismos de autopreservacao
+            para garantir ao maximo sua operacao com qualidade;
+            - Um sistema não pode ser "egoista" ao ponto de realizar mais requisicoes em um sistema que 
+            esta falhando;
+            - Um sistema lento no ar muitas vezes é pior do que um sistema fora do ar(Efeito dominó);
+        - Health check:
+            - Sem sinais vitais, não é possível saber a "saúde" de um sistema;
+            - É necessário algum sistema que rode de vez em quando para saúde do sistema. 
+            - E se o sistema não estiver saudável ? 
+                Ex: Se chegar uma requisicao, devolve erro 500.
+            - Um sistema que não está saudável possui uma chance de se recuperar caso o tráfego pare de 
+            ser direcionado a ele temporariamente, dessa forma, o sistem iria comecar a processar requisicoes
+            aos poucos e poderá voltar a funcionar 100%(chamado de self-healing);
+            - É necessário ter um health check de qualidade
+                - Muitos sistemas utilizam apenas um endpoint /health que de 10 em 10 segundos irá enviar um
+                ping acessando uma URL e se aquela URL retornar o sistema está saudável, mas isso não é verdade,
+                pois URL pode retornar somente um html. E há uma diferenca grande entre retornar apenas um html
+                de uma requisicao que faz várias consultas no banco e etc;
+            - Criar de forma estratégica quais são os dados que se acessados, vão retornar um 200 que consultou banco
+            e fez várias requisicoes e processamento, ou seja, algo realmente que represente o sistema.
+        - Rate limiting:
+            - Protege o sistema baseado no que ele foi projetado para suportar;
+                - Quando você sobe um sistema no ar, você deve ter uma idéia de quanto de requisicao o sistema irá aguentar;
+                - Ou seja, se o sistema aguenta no máximo 100 requisicoes por segundo, se esse valor for ultrapassado, basta
+                retornar um 500 ou algo parecido e retornar uma mensagem falando do quanto ele aguenta;
+            - Preferência programada por tipo de cliente;
+                - Ex: Tem um sistema(crítico) que faz requicoes nesse seu sistema fazendo 50 requisicoes por segundo 
+                (o sistema aguenta o dobro), caso voce tenha outro sistema que não é tão crítico, e por um acaso 
+                 passa a ultrapassar o limite de 100, o primeiro sistema que é crítico irá parar de processar. Por isso,
+                 é importante programar o rate limit por client;
+        - Circuit breaker:
+            - Protege o sistema fazendo com que as requisicoes feitas para ele sejam negadas;
+                Ex: Semelhante com um disjuntor elétrico;
+            - Circuito fechado = Requisicoes chegam normalmente;
+            - Circuito aberto = Requisicoes não chegam ao sistema. Retorna erro 500 instantaneamente;
+            - Meio aberto = Permite uma quantidade limitada de requisicoes para verificacao se o sistema
+            tem condicoes de voltar ao ar integralmente;
+                - Ele se mantem fechado, mas caso seja sobrecarregado o sistema se abre,e de tempos em tempos ele se fecha 
+                permitindo novas requisicoes e se abre novamente caso seja sobrecarregado novamente;
+                - É um tratamento de self healing e ele se fecha novamente caso o sistema volte ao limite que aguenta;
+        - API Gateway:
+            - É uma api que centraliza o recebimento de todas as requisicoes que estão acontecendo na aplicacao;
+            - Implementa politicas de rate limiting, health check, authentication, logs e etc;
+            - Garante que requisicoes "inapropriadas" cheguem até o sistema:
+                Ex: Usuário não autenticado;
+        - Service mesh(malha de servicos) !IMPORTANTE:
+            - Controla o tráfego de rede;
+                - Colocar proxys do lado de cada sistema nosso, ou seja, toda vez que o sistema A conversar com o sistema B,
+                na verdade não estarão conversando entre eles, eles pensam que se conversam, mas na verdade o sistema A está
+                mandando mensagem para o proxy(sendCar) que esse sim manda uma mensagem para o sistema B.
+                - Toda a comunicacao dentro da rede mesh são feitos através de proxys, para que dessa forma, tudo o que está 
+                passando na rede possa ser controlado, medido, pegar dados, quem manda informacao pra quem, como, quanto tempo,
+                quanto de informacao e etc. Ou seja, com todas essas informacoes, da para entender o comportamento da rede e da
+                para controlar essa rede;
+            - Evita implementacoes de protecao pelo próprio sistema (Ex: rate limiting, circuit breaker);
+            - Nos ajuda a controlar e a entender tudo o que acontece na rede, podendo dessa forma prover informacoes para implementacao
+            de rate limiting, circuit breaker, políticas de retry, políticas de timeout e etc;
+            - Toda a comunicacao entre o sistema são criptografadas;
+                - Cria uma relacao de criptografia entre o sistemas através do mTLS;
+        - Comunicacao assíncrona(kafka):
+            - Evita perda de dados;
+            - Não há perda de dados no envio de uma transacao caso o servidor esteja fora;
+            - Manda a mensagem para um intermediário que irá verificar se o servidor está fora, caso esteja ele mantém armazenado,
+            e aguarda o servidor voltar para poder responder a quem solicitou a requisicao;
+            - Servidor pode processar a transacao em seu tempo quando estiver online;
+            - Entender com profundindade o message broker / sistema de stream;
+        - Garantias de entrega(Retry):
+            - Mandar mensagens continuamente(de tempos em tempos) para o servidor até ele responder;
+            - Caso 10 sistemas mandem uma requisicao simultaneamente para um sistema e ele não aguenta, 
+            esses 10 sistemas podem estar configurados para enviar requisicoes de 2 em 2 segundos, logo, 
+            a cada 2 segundos os mesmos 10 sistemas estarão enviando novamente a requisicao e não terão respostas.
+            Logo esse sistema linear de tempos em tempos pode não funcionar;
+            - Exponential backoff:
+                - Há a variacao desse tempo de chamada de cada requisicao de forma exponencial, para que a cada chamada
+                de retry ele aguarda um intervalo maior(mas ainda assim existe o mesmo problema do linear);
+            - Exponential backoff - Jitter:
+                - Se todos fizerem requisicoes simultaneamente, para cada chamada, será processado um algoritmo que irá gerar
+                um tipo de ruido que irá atrasar a requisicao de cada chamada, evitando assim as retentativas simultaneas. Aumentanto
+                assim a chance da requisicao funcionar;
+        - Garantias de entrega(Kafka)
+            - Envio a mensagem para um Broker, esse Broker vai armazenar essa informacao e enviará depois para outro sistema.
+            - O grande ponto é que quando estamos falando de alta disponibilidade, estamos falando de clusters que são um
+            conjunto de brokers;
+            - Existe um broker leader que realmente receberá a mensagem;
+            - As vezes é necessário eu não querer a garantia de entrega(não há a necessidade do sistema me devolver 
+            uma informacao de recebimento) Ex: Correios - Ack 0;
+            - Quando você não quer garantia de entrega, as requisicoes ficam mais rápidas(mas as vezes pode ocasionar
+            na perda de algum dado);
+            - Quando um broker recebe uma mensagem, ele pode responder ao client que ele recebeu essa mensagem -Ack 1;
+            - Caso um broker caia, o outro pode assumir;
+            - Mas e se acontecer algo com o broker quando ele recebe uma mensagem ? Pode ser que ocorra a perda da mensagem;
+            - Para contornar isso, quando o Broker recebe a mensagem ele distribui essa mensagem para os outros brokers, e retorna
+            para quem solicitou que todos os brokers receberam essa mensagem - Ack 2 ;
+             
